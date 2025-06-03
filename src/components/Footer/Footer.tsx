@@ -57,6 +57,9 @@ const Footer = () => {
                     <a href="tel:+380961212525" className={s.contactPhone}>
                         +38 (096) 121 25 25
                     </a>
+                    <p className={s.contactAddress}>
+                        Місто Одеса, вул. Заславського 36
+                    </p>
                     <p
                         className={s.schedule}
                         dangerouslySetInnerHTML={{ __html: t('time_work') }}

@@ -18,7 +18,7 @@ import { ReviewPopup } from "../../components/ReviewPopup/ReviewPopup";
 import { addToWishlist } from '../../store/slices/wishlistSlice';
 import { removeFromWishlist } from '../../store/slices/wishlistSlice';
 import {RootState} from "../../store/store.ts";
-import { Breadcrumbs } from '../../components/Breadcrumbs/Breadcrumbs';
+import { Breadcrumbs, Crumb } from '../../components/Breadcrumbs/Breadcrumbs';
 import SizeChartModal from '../../components/SizeChart/SizeChart.tsx';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useFormik } from 'formik';
@@ -30,6 +30,7 @@ import { API_BASE_URL } from '../../config/api';
 import axios from 'axios';
 import { gtagEvent } from '../../gtagEvents';
 import { fbq } from '../../utils/metaPixel';
+import { getCategories } from '../../services/fetchCategories';
 
 const ProductPage = () => {
     const { slug, colorSlug } = useParams();
@@ -68,6 +69,30 @@ const ProductPage = () => {
     const [variations, setVariations] = useState<Variation[]>([]);
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
     const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null);
+
+    const [categories, setCategories] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchAllCategories = async () => {
+            const lang = i18n.language === 'ua' ? 'uk' : i18n.language;
+            const cats = await getCategories(lang);
+            setCategories(cats);
+        };
+        fetchAllCategories();
+    }, [i18n.language]);
+
+    // Helper to build breadcrumbs path for a category
+    function getCategoryPath(catSlug: string | undefined): Crumb[] {
+        if (!catSlug || !categories.length) return [];
+        const path: Crumb[] = [];
+        let current = categories.find(cat => cat.slug === catSlug);
+        while (current) {
+            path.unshift({ label: current.name, url: `${langPrefix}/product-category/${current.slug}` });
+            if (!current.parent || current.parent === 0) break;
+            current = categories.find(cat => cat.id === current.parent);
+        }
+        return path;
+    }
 
     useEffect(() => {
         const fetchProductAndSeo = async () => {
@@ -367,6 +392,15 @@ const ProductPage = () => {
 
     const doglyad = product.meta_data?.find((meta) => meta.key === 'doglyad')?.value;
 
+    // Find the main category (first in array)
+    const mainCategory = product.categories?.[0];
+    const categoryPath = getCategoryPath(mainCategory?.slug);
+    let crumbs: Crumb[] = [
+        { label: 'Головна', url: `${langPrefix}/` },
+        ...categoryPath,
+        { label: product.name },
+    ];
+
     return (
         <>
             <HelmetProvider>
@@ -398,11 +432,7 @@ const ProductPage = () => {
             <div className={s.container}>
 
                 <Breadcrumbs
-                    crumbs={[
-                        { label: 'Головна', url: `${langPrefix}/` },
-                        { label: product.categories?.[0]?.name, url: `${langPrefix}/product-category/${product.categories?.[0]?.slug}` },
-                        { label: product.name },
-                    ]}
+                    crumbs={crumbs}
                 />
 
                 <div className={s.productPage}>

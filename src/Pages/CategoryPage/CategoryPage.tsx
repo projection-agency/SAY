@@ -7,7 +7,7 @@ import ProductItem from '../../components/ProductItem/ProductItem';
 import s from './CategoryPage.module.css';
 import CatalogFilters from '../../components/CatalogFilters/CatalogFilters';
 import Loader from '../../components/Loader/Loader';
-import { Breadcrumbs } from '../../components/Breadcrumbs/Breadcrumbs.tsx';
+import { Breadcrumbs, Crumb } from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import { fetchProductsByCategorySlug } from '../../services/fetchProductsByCategory';
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -78,17 +78,20 @@ const CategoryPage = () => {
     });
     const [sortOption, setSortOption] = useState(() => searchParams.get('sort') || 'default');
 
+    const [categories, setCategories] = useState<CategoryInfo[]>([]);
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const lang = i18n.language === 'ua' ? 'uk' : i18n.language;
-                const categories = await getCategories(lang);
-                const current = slug ? categories.find(cat => cat.slug === slug) || null : null;
+                const categoriesData = await getCategories(lang);
+                setCategories(categoriesData);
+                const current = slug ? categoriesData.find(cat => cat.slug === slug) || null : null;
                 setCategory(current);
                 const children = slug
-                    ? categories.filter(cat => cat.parent === current?.id && !['без категорії', 'без категории'].includes(cat.name.toLowerCase()))
-                    : categories.filter(cat => cat.parent === 0 && !['без категорії', 'без категории'].includes(cat.name.toLowerCase()));
+                    ? categoriesData.filter(cat => cat.parent === current?.id && !['без категорії', 'без категории'].includes(cat.name.toLowerCase()))
+                    : categoriesData.filter(cat => cat.parent === 0 && !['без категорії', 'без категории'].includes(cat.name.toLowerCase()));
                 setSubcategories(children);
                 const fetched = await fetchProductsByCategorySlug(slug || null, 1, lang);
                 setProducts(fetched);
@@ -358,6 +361,22 @@ const CategoryPage = () => {
         });
     }, [loading, currentPage, hasMore, products.length, visibleProducts.length, visibleCount]);
 
+    // Breadcrumbs logic
+    let crumbs: Crumb[] = [
+        { label: 'Головна', url: `${langPrefix}/` },
+    ];
+    if (category) {
+        if (category.parent && category.parent !== 0) {
+            const parentCat = categories.find(cat => cat.id === category.parent);
+            if (parentCat) {
+                crumbs.push({ label: parentCat.name, url: `${langPrefix}/product-category/${parentCat.slug}` });
+            }
+        }
+        crumbs.push({ label: category.name });
+    } else {
+        crumbs.push({ label: 'Каталог' });
+    }
+
     return (
         <div className={s.categoryPage}>
             <HelmetProvider>
@@ -386,10 +405,7 @@ const CategoryPage = () => {
                 <div className={s.heroBannerSmall}>
                     <Breadcrumbs
                         variant="default"
-                        crumbs={[
-                            { label: 'Головна', url: `${langPrefix}/` },
-                            { label: category?.name || 'Каталог' },
-                        ]}
+                        crumbs={crumbs}
                     />
                     <h1 className={s.categoryTitleSmall}>{category?.name}</h1>
                 </div>
@@ -400,10 +416,7 @@ const CategoryPage = () => {
                 >
                     <Breadcrumbs
                         variant="catalog"
-                        crumbs={[
-                            { label: 'Головна', url: `${langPrefix}/` },
-                            { label: category?.name || 'Каталог' },
-                        ]}
+                        crumbs={crumbs}
                     />
                     <h1 className={s.categoryTitle}>{category?.name || 'Каталог'}</h1>
                 </div>

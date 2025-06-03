@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import s from './Breadcrumbs.module.css';
 
-interface Crumb {
+export interface Crumb {
     label: string;
     url?: string;
 }
