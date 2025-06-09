@@ -53,7 +53,7 @@ const ProductPage = () => {
     });
 
     const { t, i18n } = useTranslation();
-    const langPrefix = i18n.language === '' ? '' : i18n.language === 'ru' ? '/ru' : '';
+    const langPrefix = i18n.language === 'ru' ? '/ru' : '';
 
     const navigate = useNavigate();
 
@@ -502,15 +502,20 @@ const ProductPage = () => {
                                     <div className={s.attributeGroup}>
                                         <h4 className={s.nameAtribute}>{t('product.colorProducts')}</h4>
                                         <div className={s.options}>
-                                            {product.collection_related_products.map((item: any) => (
-                                                <Link
-                                                    key={item.id}
-                                                    to={item.link}
-                                                    className={`${s.optionBtn} ${item.id === product.id ? s.active : ''}`}
-                                                >
-                                                    {item.title}
-                                                </Link>
-                                            ))}
+                                            {product.collection_related_products.map((item: any) => {
+                                                let link = item.link;
+                                                // Видаляємо /uk/ з посилання, але залишаємо /ru/
+                                                link = link.replace(/\/uk\//, '/');
+                                                return (
+                                                    <Link
+                                                        key={item.id}
+                                                        to={link}
+                                                        className={`${s.optionBtn} ${item.id === product.id ? s.active : ''}`}
+                                                    >
+                                                        {item.title}
+                                                    </Link>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 )}
@@ -525,10 +530,11 @@ const ProductPage = () => {
                                             {attr.options.map(opt => {
                                                 const key = `${attr.slug}-${opt.slug}`;
                                                 if (attr.slug === 'pa_kolir') {
+                                                    const linkTo = langPrefix ? `${langPrefix}/product/${product.slug}/${opt.slug}` : `/product/${product.slug}/${opt.slug}`;
                                                     return (
                                                         <Link
                                                             key={key}
-                                                            to={`${langPrefix}/product/${product.slug}/${opt.slug}`}
+                                                            to={linkTo}
                                                             className={`${s.optionBtn} ${selectedOptions[attr.slug] === opt.name ? s.active : ''}`}
                                                             style={{ backgroundColor: opt.slug }}
                                                         >

@@ -13,7 +13,14 @@
     padding-bottom: 3.17vw;
 }
 
-
+.wrapDocsSite{
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    a{
+        text-wrap: nowrap;
+    }
+}
 
 .logo {
     margin-bottom: 3.54vw;

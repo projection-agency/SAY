@@ -136,7 +136,10 @@ const Footer = () => {
             </div>
 
             <div className={s.middle}>
-                <Link to={`${langPrefix}/privacy-policy`} className={s.privacy}>{t('footer.privacyPolicy')}</Link>
+                <div className={s.wrapDocsSite}>
+                    <Link to={`${langPrefix}/privacy-policy`} className={s.privacy}>{t('footer.privacyPolicy')}</Link>
+                    <Link to={`${langPrefix}/dogovir-oferty`} className={s.privacy}>{t('offer.title')}</Link>
+                </div>
 
                 <div className={s.payment}>
                     <img src="/icons/privat24.svg" alt="Privat24" />

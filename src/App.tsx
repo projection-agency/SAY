@@ -31,6 +31,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import i18n from './i18n';
+import DogovirOferty from './Pages/DogovirPage/DogovirPage.tsx';
 
 export const lang = i18n.language === 'ua' ? 'ru' : i18n.language; // WPML використовує 'uk' для української
 
@@ -130,6 +131,8 @@ const Layout: React.FC = () => {
                     <Route path="/ru/faqs" element={<FaqPage />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                     <Route path="/ru/privacy-policy" element={<PrivacyPolicyPage />} />
+                    <Route path="/dogovir-oferty" element={<DogovirOferty />} />
+                    <Route path="/ru/dogovir-oferty" element={<DogovirOferty />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </main>

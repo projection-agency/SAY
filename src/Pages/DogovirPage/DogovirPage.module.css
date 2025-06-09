@@ -1,0 +1,184 @@
+.policyPage {
+    padding: 0 8.33vw;
+    margin: 4.16vw 0 9vw 0;
+}
+.heroBanner{
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 17.70vw;
+    margin: 0.83vw;
+    border-radius: 0.83vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.categoryTitle{
+    color: #FFF;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: #FFF;
+    font-family: "Playfair Display";
+    font-size: 3.125vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 72px */
+    letter-spacing: 0.09vw;
+    text-align: center;
+}
+.pageTitle {
+    font-weight: 700;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.83vw;
+    margin: 0 auto;
+    margin-top: 4.16vw;
+}
+details{
+    width: 100%;
+}
+.descMain{
+    color: var(--Green-Black, #0C1618);
+    font-family: Raleway;
+    font-size: 0.93vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 23.4px */
+    margin-bottom: 0.83vw;
+}
+.policyBlock {
+    display: flex;
+    padding: 2.08vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: 0.41vw;
+    background: #FBFBFB;
+    width: 48%;
+    height: max-content;
+}
+
+.policyTitle {
+    color: var(--Green-Black, #0C1618);
+    font-size: 1.25vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; /* 28.8px */
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    svg{
+        transform: rotate(180deg);
+    }
+}
+
+.list {
+    margin-top: 1.45vw;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item {
+    color: var(--Green-Black, #0C1618);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: Raleway;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+}
+
+
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 91.46vw;
+        margin: 0 auto;
+        margin-top: 2.13vw;
+    }
+    .policyPage {
+        padding: 0vw;
+        max-width: 91.46vw;
+        margin: 0 auto;
+        margin-top: 12.8vw;
+        margin-bottom: 21.33vw;
+    }
+
+    .heroBanner {
+        height: 54.4vw;
+        margin: 4.26vw;
+        border-radius: 2.13vw;
+    }
+
+    .categoryTitle {
+        font-size: 8.53vw;
+    }
+
+
+    .columns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4.26vw;
+        margin: 0 auto;
+        margin-top: 4.16vw;
+    }
+    details{
+        width: 100%;
+    }
+    .descMain{
+        color: var(--Green-Black, #0C1618);
+        font-family: Raleway;
+        font-size: 4.26vw;
+        margin-bottom: 4.26vw;
+    }
+    .policyBlock {
+        display: flex;
+        padding: 4.26vw;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        border-radius: 2vw;
+        background: #FBFBFB;
+        width: 100%;
+        height: max-content;
+    }
+
+    .policyTitle {
+        color: var(--Green-Black, #0C1618);
+        font-size: 4.8vw;
+        svg{
+            transform: rotate(180deg);
+        }
+    }
+
+    .list {
+        margin-top: 8.53vw;
+        display: flex;
+        flex-direction: column;
+        gap: 4.26vw;
+    }
+
+    .item {
+        color: var(--Green-Black, #0C1618);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: Raleway;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 130%; /* 20.8px */
+    }
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
